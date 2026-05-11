@@ -115,6 +115,10 @@
         </div>
 
         <div class="form-group">
+          <label>Phone (optional)</label>
+          <input type="tel" id="phone" placeholder="+420 777 888 999" oninput="render()">
+        </div>
+        <div class="form-group">
           <label>Logo (optional)</label>
           <input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp" onchange="handleLogo(event)">
           <div id="logoPreview" style="margin-top: 6px;"></div>
@@ -171,7 +175,12 @@
       grid.appendChild(div);
     });
 
-    function sigHTML(theme, name, role, email, company, website, tagline, logo) {
+    function sigHTML(theme, name, role, email, company, website, tagline, logo, phone) {
+      const phoneLine = phone ? `<div style="margin-top: 1px; font-size: 11px; color: #999;">📞 ${phone}</div>` : '';
+      const phoneLinePlain = phone ? `\n📞 ${phone}` : '';
+      const phoneTerminal = phone ? `  [📞 ${phone}]\n` : '';
+      const phoneDark = phone ? `<div style="margin-top: 1px;"><span style="color: #555; font-size: 11px;">📞 ${phone}</span></div>` : '';
+      const phoneLight = phone ? `<div style="margin-top: 2px; color: #999; font-size: 11px;">📞 ${phone}</div>` : '';
       const logoBlock = logo
         ? `<img src="${logo}" alt="${company}" style="max-width: 40px; max-height: 40px; border-radius: 4px;">`
         : theme.style === 'terminal'
@@ -198,6 +207,7 @@
         <div style="color: #777; font-size: 11px; margin-top: 1px;">${role}</div>
         <div style="margin-top: 6px;"><span style="color: #bbb;">[</span><a href="mailto:${email}" style="color: #0a0a0a; text-decoration: none;">${email}</a><span style="color: #bbb;">]</span></div>
         <div><span style="color: #bbb;">[</span><a href="https://${website}" style="color: #0a0a0a; text-decoration: none;">${website}</a><span style="color: #bbb;">]</span></div>
+        ${phone ? `<div style="margin-top: 2px;"><span style="color: #bbb;">[</span><a href="tel:${phone.replace(/[^+\d]/g,'')}" style="color: #777; text-decoration: none; font-size: 11px;">✆ ${phone}</a><span style="color: #bbb;">]</span></div>` : ''}
         <div style="margin-top: 4px; color: #ccc; font-size: 10px;">// ${company}</div>
       </td>
     </tr>
@@ -218,6 +228,7 @@
   <div style="margin-top: 2px;">
     <a href="https://${website}" style="color: #666; text-decoration: none; font-size: 11px;">${website}</a>
   </div>
+  ${phone ? `<div style="margin-top: 4px; color: #888; font-size: 11px;"><a href="tel:${phone.replace(/[^+\d]/g,'')}" style="color: #888; text-decoration: none;">📞 ${phone}</a></div>` : ''}
   ${tagline ? `<div style="margin-top: 6px; font-size: 10px; color: #555; font-style: italic;">"${tagline}"</div>` : ''}
   <div style="margin-top: 6px; color: ${theme.accent}; font-size: 16px;">✦</div>
 </div>`;
@@ -240,6 +251,7 @@
           <a href="https://${website}" style="color: #777; text-decoration: none; font-size: 11px;">${website}</a>
         </div>
         <div style="margin-top: 2px; font-size: 10px; color: #555;">${company}</div>
+        ${phoneDark}
       </td>
     </tr>
   </table>
@@ -255,6 +267,7 @@
     <a href="mailto:${email}" style="color: #333; text-decoration: none;">${email}</a>
   </div>
   <div style="margin-top: 2px; color: #999; font-size: 11px;">${company} &middot; ${website}</div>
+  ${phoneLight}
   ${tagline ? `<div style="margin-top: 4px; font-size: 11px; color: #bbb;">${tagline}</div>` : ''}
 </div>`;
       }
@@ -277,6 +290,7 @@
         <div style="margin-top: 2px; font-size: 11px; color: #999;">
           <strong style="color: ${theme.color1};">${company}</strong> — ${tagline}
         </div>
+        ${phoneLine}
       </td>
     </tr>
   </table>
@@ -296,15 +310,16 @@
       reader.readAsDataURL(file);
     }
 
-    function sigPlain(theme, name, role, email, company, website, tagline, logo) {
+    function sigPlain(theme, name, role, email, company, website, tagline, logo, phone) {
       const logoLine = logo ? `[Logo: replace with your hosted logo URL]\n` : '';
+      const phoneLine = phone ? `\n✆ ${phone}` : '';
       if (theme.style === 'terminal') {
-        return `${logoLine}▸ ${name} | ${role}\n  [${email}]\n  [${website}]\n  // ${company}\n$ _`;
+        return `${logoLine}▸ ${name} | ${role}\n  [${email}]\n  [${website}]${phone ? `\n  [✆ ${phone}]` : ''}\n  // ${company}\n$ _`;
       }
       if (theme.style === 'luxury') {
-        return `${logoLine}${company}\n${name} — ${role}\n${email} | ${website}\n"${tagline}"\n✦`;
+        return `${logoLine}${company}\n${name} — ${role}\n${email} | ${website}${phoneLine}\n"${tagline}"\n✦`;
       }
-      return `${logoLine}--\n${name} | ${role}\n✉ ${email} | ${website}\n${company} — ${tagline}`;
+      return `${logoLine}--\n${name} | ${role}\n✉ ${email}${phoneLine}\n${website}\n${company} — ${tagline}`;
     }
 
     function getTheme() {
@@ -316,6 +331,7 @@
         name: document.getElementById('name').value || 'Your Name',
         role: document.getElementById('role').value || 'Role',
         email: document.getElementById('email').value || 'email@domain.com',
+        phone: document.getElementById('phone').value || '',
         company: document.getElementById('company').value || 'Company',
         website: document.getElementById('website').value || 'website.com',
         tagline: document.getElementById('tagline').value || ''
@@ -326,14 +342,14 @@
       const v = getVals();
       const theme = getTheme();
       const logo = logoDataUrl;
-      document.getElementById('preview').innerHTML = sigHTML(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, logo);
+      document.getElementById('preview').innerHTML = sigHTML(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, logo, v.phone);
 
       const codeText = currentTab === 'html'
         ? (logo
             ? `<!-- Replace {LOGO_URL} with your actual hosted logo URL -->\n`
-            + sigHTML(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, '{LOGO_URL}')
-            : sigHTML(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, null))
-        : sigPlain(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, logo);
+            + sigHTML(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, '{LOGO_URL}', v.phone)
+            : sigHTML(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, null, v.phone))
+        : sigPlain(theme, v.name, v.role, v.email, v.company, v.website, v.tagline, logo, v.phone);
       document.getElementById('codeOutput').textContent = codeText;
     }
 
