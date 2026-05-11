@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Signatures</title>
+  <title>SigMaker — Email Signature Generator</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -12,68 +12,140 @@
       color: #1a1a1a;
       padding: 40px 20px;
     }
-    .container { max-width: 800px; margin: 0 auto; }
-    h1 {
-      font-size: 24px;
+    .container { max-width: 900px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    header h1 {
+      font-size: 28px;
       font-weight: 600;
-      margin-bottom: 8px;
       letter-spacing: -0.5px;
-      color: #1a1a1a;
     }
-    h1 span {
-      background: linear-gradient(135deg, #c9a84c, #b8952e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .subtitle { color: #888; font-size: 14px; margin-bottom: 40px; }
+    header h1 span { background: linear-gradient(135deg, #c9a84c, #b8952e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    header p { color: #888; font-size: 14px; margin-top: 6px; }
 
-    .company { margin-bottom: 48px; }
-    .company h2 {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 4px;
+    .layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
     }
-    .company h2 span {
-      color: #c9a84c;
-    }
-    .company .desc { color: #888; font-size: 13px; margin-bottom: 20px; }
+    @media (max-width: 700px) { .layout { flex-direction: column; } }
 
-    .card {
+    .panel {
+      flex: 1;
       background: #fff;
       border: 1px solid #e8e4dc;
       border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 16px;
+      padding: 28px;
       box-shadow: 0 1px 3px rgba(201,168,76,0.06);
     }
-    .card h3 {
+    .panel h2 {
       font-size: 13px;
-      font-weight: 500;
-      color: #999;
+      font-weight: 600;
+      color: #c9a84c;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
       margin-bottom: 16px;
     }
-    .card h3::before {
-      content: "◆ ";
-      color: #c9a84c;
-      font-size: 10px;
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      margin-bottom: 4px;
     }
-    .preview-wrap {
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #faf9f6;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: #c9a84c;
+      background: #fff;
+    }
+
+    .theme-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .theme-btn {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+    }
+    .theme-btn input { display: none; }
+    .theme-btn label {
+      display: block;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #e8e4dc;
+      font-size: 12px;
+      font-weight: 500;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .theme-btn input:checked + label {
+      border-color: #c9a84c;
+      color: #1a1a1a;
+      background: #faf6ee;
+    }
+    .theme-btn label:hover {
+      border-color: #c9a84c;
+    }
+
+    .preview-box {
+      margin-top: 16px;
       padding: 20px;
       background: #faf9f6;
-      border-radius: 8px;
       border: 1px solid #e8e4dc;
-      margin-bottom: 12px;
+      border-radius: 8px;
+      min-height: 100px;
     }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin: 16px 0 0;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #e8e4dc;
+      border-radius: 8px 8px 0 0;
+      background: #f5f3ee;
+      cursor: pointer;
+      color: #888;
+      font-family: inherit;
+      transition: all 0.2s;
+      border-bottom: none;
+    }
+    .tab-btn.active {
+      background: #0a0a0a;
+      color: #e0e0e0;
+      border-color: #0a0a0a;
+    }
+
     .code-block {
       position: relative;
       background: #0a0a0a;
-      border-radius: 8px;
+      border-radius: 0 8px 8px 8px;
       padding: 20px;
-      margin-top: 12px;
-      border: 1px solid #222;
+      margin-top: 0;
     }
     .code-block code {
       font-family: 'JetBrains Mono', 'SF Mono', monospace;
@@ -91,7 +163,7 @@
       color: #fff;
       border: none;
       border-radius: 6px;
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-size: 11px;
       cursor: pointer;
       font-family: inherit;
@@ -100,74 +172,83 @@
     }
     .copy-btn:hover { background: #b8952e; }
     .copy-btn.copied { background: #2d6a4f; }
-
-    .select-all-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: #555;
-      cursor: pointer;
-      margin-top: 8px;
-      text-decoration: underline;
-      display: inline-block;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>✉ <span>Email Signatures</span></h1>
-    <p class="subtitle">Unified signatures for the team. Pick one, copy, paste into your email client.</p>
+    <header>
+      <h1>◆ <span>SigMaker</span></h1>
+      <p>Email signature generator — pick a style, fill the form, copy & paste</p>
+    </header>
 
-    <!-- StackMind -->
-    <div class="company">
-      <h2>Stack<span>Mind</span></h2>
-      <p class="desc">Myšlení, které prodáváme</p>
+    <div class="layout">
+      <!-- Form -->
+      <div class="panel">
+        <h2>📝 Details</h2>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="name" value="Petr Knotek" oninput="render()">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <input type="text" id="role" value="Developer" oninput="render()">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" value="petr.knotek@stackmind.cz" oninput="render()">
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" id="company" value="StackMind s.r.o." oninput="render()">
+        </div>
+        <div class="form-group">
+          <label>Website</label>
+          <input type="text" id="website" value="stackmind.cz" oninput="render()">
+        </div>
 
-      <div class="card">
-        <h3>HTML Signature</h3>
-        <div class="preview-wrap" id="stackmind-html-preview"></div>
-        <div class="code-block">
-          <button class="copy-btn" data-target="stackmind-html-code">Copy</button>
-          <code id="stackmind-html-code"></code>
+        <h2 style="margin-top: 24px;">🎨 Style</h2>
+        <div class="theme-selector">
+          <div class="theme-btn">
+            <input type="radio" name="theme" id="theme-stackmind" value="stackmind" checked onchange="render()">
+            <label for="theme-stackmind">StackMind</label>
+          </div>
+          <div class="theme-btn">
+            <input type="radio" name="theme" id="theme-soloventure" value="soloventure" onchange="render()">
+            <label for="theme-soloventure">SoloVenture</label>
+          </div>
+          <div class="theme-btn">
+            <input type="radio" name="theme" id="theme-minimal" value="minimal" onchange="render()">
+            <label for="theme-minimal">Minimal</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tagline</label>
+          <input type="text" id="tagline" value="Myšlení, které prodáváme" oninput="render()">
         </div>
       </div>
 
-      <div class="card">
-        <h3>Plain Text</h3>
-        <div class="code-block">
-          <button class="copy-btn" data-target="stackmind-plain-code">Copy</button>
-          <code id="stackmind-plain-code"></code>
-        </div>
-        <span class="select-all-link" onclick="selectText('stackmind-plain-code')">Select all</span>
-      </div>
-    </div>
+      <!-- Preview -->
+      <div class="panel">
+        <h2>👁 Preview</h2>
+        <div class="preview-box" id="preview"></div>
 
-    <!-- SoloVenture -->
-    <div class="company">
-      <h2>SoloVenture</h2>
-      <p class="desc">High-tech minimal</p>
-
-      <div class="card">
-        <h3>HTML Signature</h3>
-        <div class="preview-wrap" id="soloventure-html-preview"></div>
-        <div class="code-block">
-          <button class="copy-btn" data-target="soloventure-html-code">Copy</button>
-          <code id="soloventure-html-code"></code>
+        <div class="tabs">
+          <button class="tab-btn active" id="tab-html" onclick="switchTab('html')">HTML</button>
+          <button class="tab-btn" id="tab-plain" onclick="switchTab('plain')">Plain Text</button>
         </div>
-      </div>
-
-      <div class="card">
-        <h3>Plain Text</h3>
         <div class="code-block">
-          <button class="copy-btn" data-target="soloventure-plain-code">Copy</button>
-          <code id="soloventure-plain-code"></code>
+          <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy</button>
+          <code id="codeOutput"></code>
         </div>
-        <span class="select-all-link" onclick="selectText('soloventure-plain-code')">Select all</span>
       </div>
     </div>
   </div>
 
   <script>
-    const STACKMIND_HTML = `<div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; color: #1a1a2e; border-left: 3px solid #0f3460; padding-left: 16px; margin-top: 12px;">
+    let currentTab = 'html';
+
+    function stackmindHTML(name, role, email, company, website, tagline) {
+      return `<div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; color: #1a1a2e; border-left: 3px solid #0f3460; padding-left: 16px; margin-top: 12px;">
   <table cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
     <tr>
       <td style="vertical-align: middle; padding-right: 12px;">
@@ -176,93 +257,142 @@
         </div>
       </td>
       <td style="vertical-align: middle;">
-        <div style="font-weight: 700; font-size: 15px; color: #0f3460;">{NAME}</div>
-        <div style="color: #555; font-size: 12px;">{ROLE}</div>
+        <div style="font-weight: 700; font-size: 15px; color: #0f3460;">${name}</div>
+        <div style="color: #555; font-size: 12px;">${role}</div>
         <div style="margin-top: 4px;">
-          <a href="mailto:{EMAIL}" style="color: #e94560; text-decoration: none;">✉ {EMAIL}</a>
+          <a href="mailto:${email}" style="color: #e94560; text-decoration: none;">✉ ${email}</a>
           <span style="color: #ccc; margin: 0 6px;">|</span>
-          <a href="https://stackmind.cz" style="color: #0f3460; text-decoration: none;">🌐 stackmind.cz</a>
+          <a href="https://${website}" style="color: #0f3460; text-decoration: none;">🌐 ${website}</a>
         </div>
         <div style="margin-top: 2px; font-size: 11px; color: #999;">
-          <strong style="color: #0f3460;">StackMind s.r.o.</strong> — Myšlení, které prodáváme
+          <strong style="color: #0f3460;">${company}</strong> — ${tagline}
         </div>
       </td>
     </tr>
   </table>
 </div>`;
+    }
 
-    const STACKMIND_PLAIN = `--
-{NAME} | {ROLE}
-✉ {EMAIL} | stackmind.cz
-StackMind s.r.o. — Myšlení, které prodáváme`;
+    function stackmindPlain(name, role, email, company, website, tagline) {
+      return `--
+${name} | ${role}
+✉ ${email} | ${website}
+${company} — ${tagline}`;
+    }
 
-    const SOLOVENTURE_HTML = `<div style="font-family: 'SF Mono', 'JetBrains Mono', 'Courier New', monospace; font-size: 12px; color: #0a0a0a; margin-top: 16px; padding-top: 12px;">
+    function soloventureHTML(name, role, email, company, website, tagline) {
+      return `<div style="font-family: 'SF Mono', 'JetBrains Mono', 'Courier New', monospace; font-size: 12px; color: #0a0a0a; margin-top: 16px; padding-top: 12px;">
   <table cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
     <tr>
       <td style="width: 40px; vertical-align: top; padding-right: 10px;">
         <div style="color: #555; font-size: 22px; line-height: 1; font-weight: 300;">▸</div>
       </td>
       <td style="vertical-align: top;">
-        <div style="font-weight: 500; color: #0a0a0a;">{NAME}</div>
-        <div style="color: #777; font-size: 11px; margin-top: 1px;">{ROLE}</div>
+        <div style="font-weight: 500; color: #0a0a0a;">${name}</div>
+        <div style="color: #777; font-size: 11px; margin-top: 1px;">${role}</div>
         <div style="margin-top: 6px;">
           <span style="color: #bbb;">[</span>
-          <a href="mailto:{EMAIL}" style="color: #0a0a0a; text-decoration: none;">{EMAIL}</a>
+          <a href="mailto:${email}" style="color: #0a0a0a; text-decoration: none;">${email}</a>
           <span style="color: #bbb;">]</span>
         </div>
         <div>
           <span style="color: #bbb;">[</span>
-          <a href="https://soloventure.cz" style="color: #0a0a0a; text-decoration: none;">soloventure.cz</a>
+          <a href="https://${website}" style="color: #0a0a0a; text-decoration: none;">${website}</a>
           <span style="color: #bbb;">]</span>
         </div>
-        <div style="margin-top: 4px; color: #ccc; font-size: 10px;">// SoloVenture</div>
+        <div style="margin-top: 4px; color: #ccc; font-size: 10px;">// ${company}</div>
       </td>
     </tr>
   </table>
   <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 8px 0 4px 0;">
   <div style="color: #ccc; font-size: 10px;">$ _</div>
 </div>`;
+    }
 
-    const SOLOVENTURE_PLAIN = `▸ {NAME} | {ROLE}
-  [{EMAIL}]
-  [soloventure.cz]
-  // SoloVenture
+    function soloventurePlain(name, role, email, company, website, tagline) {
+      return `▸ ${name} | ${role}
+  [${email}]
+  [${website}]
+  // ${company}
 $ _`;
-
-    function fill(name, role, email, tmpl) {
-      return tmpl.replace(/\{NAME\}/g, name).replace(/\{ROLE\}/g, role).replace(/\{EMAIL\}/g, email);
     }
 
-    document.getElementById('stackmind-html-preview').innerHTML = fill('Petr Knotek', 'Developer', 'petr.knotek@stackmind.cz', STACKMIND_HTML);
-    document.getElementById('stackmind-html-code').textContent = STACKMIND_HTML;
-    document.getElementById('stackmind-plain-code').textContent = STACKMIND_PLAIN;
+    function minimalHTML(name, role, email, company, website, tagline) {
+      return `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; color: #333; margin-top: 16px; padding-top: 12px; border-top: 1px solid #e0e0e0;">
+  <div style="font-weight: 600; font-size: 14px; color: #000;">${name}</div>
+  <div style="color: #888; font-size: 12px;">${role}</div>
+  <div style="margin-top: 4px;">
+    <a href="mailto:${email}" style="color: #0066cc; text-decoration: none;">${email}</a>
+  </div>
+  <div style="margin-top: 2px; font-size: 11px; color: #999;">
+    ${company} — ${tagline}
+  </div>
+</div>`;
+    }
 
-    document.getElementById('soloventure-html-preview').innerHTML = fill('Matej Kováč', 'Business Developer', 'matej@soloventure.cz', SOLOVENTURE_HTML);
-    document.getElementById('soloventure-html-code').textContent = SOLOVENTURE_HTML;
-    document.getElementById('soloventure-plain-code').textContent = SOLOVENTURE_PLAIN;
+    function minimalPlain(name, role, email, company, website, tagline) {
+      return `${name} — ${role}
+${email}
+${company} — ${tagline}`;
+    }
 
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const target = document.getElementById(this.dataset.target);
-        navigator.clipboard.writeText(target.textContent).then(() => {
-          this.textContent = 'Copied!';
-          this.classList.add('copied');
-          setTimeout(() => {
-            this.textContent = 'Copy';
-            this.classList.remove('copied');
-          }, 2000);
-        });
+    function getTheme() {
+      return document.querySelector('input[name="theme"]:checked').value;
+    }
+
+    function getVals() {
+      return {
+        name: document.getElementById('name').value || 'Your Name',
+        role: document.getElementById('role').value || 'Role',
+        email: document.getElementById('email').value || 'email@domain.com',
+        company: document.getElementById('company').value || 'Company',
+        website: document.getElementById('website').value || 'website.com',
+        tagline: document.getElementById('tagline').value || ''
+      };
+    }
+
+    function render() {
+      const v = getVals();
+      const theme = getTheme();
+      const preview = document.getElementById('preview');
+      const code = document.getElementById('codeOutput');
+
+      if (theme === 'stackmind') {
+        preview.innerHTML = stackmindHTML(v.name, v.role, v.email, v.company, v.website, v.tagline);
+        code.textContent = currentTab === 'html'
+          ? stackmindHTML(v.name, v.role, v.email, v.company, v.website, v.tagline)
+          : stackmindPlain(v.name, v.role, v.email, v.company, v.website, v.tagline);
+      } else if (theme === 'soloventure') {
+        preview.innerHTML = soloventureHTML(v.name, v.role, v.email, v.company, v.website, v.tagline);
+        code.textContent = currentTab === 'html'
+          ? soloventureHTML(v.name, v.role, v.email, v.company, v.website, v.tagline)
+          : soloventurePlain(v.name, v.role, v.email, v.company, v.website, v.tagline);
+      } else {
+        preview.innerHTML = minimalHTML(v.name, v.role, v.email, v.company, v.website, v.tagline);
+        code.textContent = currentTab === 'html'
+          ? minimalHTML(v.name, v.role, v.email, v.company, v.website, v.tagline)
+          : minimalPlain(v.name, v.role, v.email, v.company, v.website, v.tagline);
+      }
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.getElementById('tab-html').classList.toggle('active', tab === 'html');
+      document.getElementById('tab-plain').classList.toggle('active', tab === 'plain');
+      render();
+    }
+
+    function copyCode() {
+      const code = document.getElementById('codeOutput').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
       });
-    });
-
-    function selectText(id) {
-      const el = document.getElementById(id);
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
     }
+
+    render();
   </script>
 </body>
 </html>
