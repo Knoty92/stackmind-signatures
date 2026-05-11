@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Signatures</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      padding: 40px 20px;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .subtitle { color: #888; font-size: 14px; margin-bottom: 40px; }
+
+    .company { margin-bottom: 48px; }
+    .company h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .company .desc { color: #888; font-size: 13px; margin-bottom: 20px; }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 13px;
+      font-weight: 500;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .preview-wrap {
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      margin-bottom: 12px;
+    }
+    .code-block {
+      position: relative;
+      background: #0a0a0a;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 12px;
+    }
+    .code-block code {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 12px;
+      color: #e0e0e0;
+      white-space: pre-wrap;
+      word-break: break-all;
+      display: block;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .copy-btn:hover { background: #555; }
+    .copy-btn.copied { background: #2d6a4f; }
+
+    .select-all-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #555;
+      cursor: pointer;
+      margin-top: 8px;
+      text-decoration: underline;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✉ Email Signatures</h1>
+    <p class="subtitle">Unified signatures for the team. Pick one, copy, paste into your email client.</p>
+
+    <!-- StackMind -->
+    <div class="company">
+      <h2>StackMind</h2>
+      <p class="desc">Myšlení, které prodáváme</p>
+
+      <div class="card">
+        <h3>HTML Signature</h3>
+        <div class="preview-wrap" id="stackmind-html-preview"></div>
+        <div class="code-block">
+          <button class="copy-btn" data-target="stackmind-html-code">Copy</button>
+          <code id="stackmind-html-code"></code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Plain Text</h3>
+        <div class="code-block">
+          <button class="copy-btn" data-target="stackmind-plain-code">Copy</button>
+          <code id="stackmind-plain-code"></code>
+        </div>
+        <span class="select-all-link" onclick="selectText('stackmind-plain-code')">Select all</span>
+      </div>
+    </div>
+
+    <!-- SoloVenture -->
+    <div class="company">
+      <h2>SoloVenture</h2>
+      <p class="desc">High-tech minimal</p>
+
+      <div class="card">
+        <h3>HTML Signature</h3>
+        <div class="preview-wrap" id="soloventure-html-preview"></div>
+        <div class="code-block">
+          <button class="copy-btn" data-target="soloventure-html-code">Copy</button>
+          <code id="soloventure-html-code"></code>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Plain Text</h3>
+        <div class="code-block">
+          <button class="copy-btn" data-target="soloventure-plain-code">Copy</button>
+          <code id="soloventure-plain-code"></code>
+        </div>
+        <span class="select-all-link" onclick="selectText('soloventure-plain-code')">Select all</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STACKMIND_HTML = `<div style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; color: #1a1a2e; border-left: 3px solid #0f3460; padding-left: 16px; margin-top: 12px;">
+  <table cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+    <tr>
+      <td style="vertical-align: middle; padding-right: 12px;">
+        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0f3460, #16213e); border-radius: 8px;">
+          <span style="color: #e94560; font-weight: 800; font-size: 18px; line-height: 40px; display: block; text-align: center;">SM</span>
+        </div>
+      </td>
+      <td style="vertical-align: middle;">
+        <div style="font-weight: 700; font-size: 15px; color: #0f3460;">{NAME}</div>
+        <div style="color: #555; font-size: 12px;">{ROLE}</div>
+        <div style="margin-top: 4px;">
+          <a href="mailto:{EMAIL}" style="color: #e94560; text-decoration: none;">✉ {EMAIL}</a>
+          <span style="color: #ccc; margin: 0 6px;">|</span>
+          <a href="https://stackmind.cz" style="color: #0f3460; text-decoration: none;">🌐 stackmind.cz</a>
+        </div>
+        <div style="margin-top: 2px; font-size: 11px; color: #999;">
+          <strong style="color: #0f3460;">StackMind s.r.o.</strong> — Myšlení, které prodáváme
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>`;
+
+    const STACKMIND_PLAIN = `--
+{NAME} | {ROLE}
+✉ {EMAIL} | stackmind.cz
+StackMind s.r.o. — Myšlení, které prodáváme`;
+
+    const SOLOVENTURE_HTML = `<div style="font-family: 'SF Mono', 'JetBrains Mono', 'Courier New', monospace; font-size: 12px; color: #0a0a0a; margin-top: 16px; padding-top: 12px;">
+  <table cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+    <tr>
+      <td style="width: 40px; vertical-align: top; padding-right: 10px;">
+        <div style="color: #555; font-size: 22px; line-height: 1; font-weight: 300;">▸</div>
+      </td>
+      <td style="vertical-align: top;">
+        <div style="font-weight: 500; color: #0a0a0a;">{NAME}</div>
+        <div style="color: #777; font-size: 11px; margin-top: 1px;">{ROLE}</div>
+        <div style="margin-top: 6px;">
+          <span style="color: #bbb;">[</span>
+          <a href="mailto:{EMAIL}" style="color: #0a0a0a; text-decoration: none;">{EMAIL}</a>
+          <span style="color: #bbb;">]</span>
+        </div>
+        <div>
+          <span style="color: #bbb;">[</span>
+          <a href="https://soloventure.cz" style="color: #0a0a0a; text-decoration: none;">soloventure.cz</a>
+          <span style="color: #bbb;">]</span>
+        </div>
+        <div style="margin-top: 4px; color: #ccc; font-size: 10px;">// SoloVenture</div>
+      </td>
+    </tr>
+  </table>
+  <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 8px 0 4px 0;">
+  <div style="color: #ccc; font-size: 10px;">$ _</div>
+</div>`;
+
+    const SOLOVENTURE_PLAIN = `▸ {NAME} | {ROLE}
+  [{EMAIL}]
+  [soloventure.cz]
+  // SoloVenture
+$ _`;
+
+    function fill(name, role, email, tmpl) {
+      return tmpl.replace(/\{NAME\}/g, name).replace(/\{ROLE\}/g, role).replace(/\{EMAIL\}/g, email);
+    }
+
+    document.getElementById('stackmind-html-preview').innerHTML = fill('Petr Knotek', 'Developer', 'petr.knotek@stackmind.cz', STACKMIND_HTML);
+    document.getElementById('stackmind-html-code').textContent = STACKMIND_HTML;
+    document.getElementById('stackmind-plain-code').textContent = STACKMIND_PLAIN;
+
+    document.getElementById('soloventure-html-preview').innerHTML = fill('Matej Kováč', 'Business Developer', 'matej@soloventure.cz', SOLOVENTURE_HTML);
+    document.getElementById('soloventure-html-code').textContent = SOLOVENTURE_HTML;
+    document.getElementById('soloventure-plain-code').textContent = SOLOVENTURE_PLAIN;
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const target = document.getElementById(this.dataset.target);
+        navigator.clipboard.writeText(target.textContent).then(() => {
+          this.textContent = 'Copied!';
+          this.classList.add('copied');
+          setTimeout(() => {
+            this.textContent = 'Copy';
+            this.classList.remove('copied');
+          }, 2000);
+        });
+      });
+    });
+
+    function selectText(id) {
+      const el = document.getElementById(id);
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  </script>
+</body>
+</html>
