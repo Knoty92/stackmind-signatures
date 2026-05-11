@@ -8,7 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f5f5f5;
+      background: #f8f6f2;
       color: #1a1a1a;
       padding: 40px 20px;
     }
@@ -18,6 +18,13 @@
       font-weight: 600;
       margin-bottom: 8px;
       letter-spacing: -0.5px;
+      color: #1a1a1a;
+    }
+    h1 span {
+      background: linear-gradient(135deg, #c9a84c, #b8952e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .subtitle { color: #888; font-size: 14px; margin-bottom: 40px; }
 
@@ -27,14 +34,18 @@
       font-weight: 500;
       margin-bottom: 4px;
     }
+    .company h2 span {
+      color: #c9a84c;
+    }
     .company .desc { color: #888; font-size: 13px; margin-bottom: 20px; }
 
     .card {
       background: #fff;
-      border: 1px solid #e8e8e8;
+      border: 1px solid #e8e4dc;
       border-radius: 12px;
       padding: 24px;
       margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(201,168,76,0.06);
     }
     .card h3 {
       font-size: 13px;
@@ -44,11 +55,16 @@
       letter-spacing: 1px;
       margin-bottom: 16px;
     }
+    .card h3::before {
+      content: "◆ ";
+      color: #c9a84c;
+      font-size: 10px;
+    }
     .preview-wrap {
       padding: 20px;
-      background: #fafafa;
+      background: #faf9f6;
       border-radius: 8px;
-      border: 1px solid #eee;
+      border: 1px solid #e8e4dc;
       margin-bottom: 12px;
     }
     .code-block {
@@ -57,6 +73,7 @@
       border-radius: 8px;
       padding: 20px;
       margin-top: 12px;
+      border: 1px solid #222;
     }
     .code-block code {
       font-family: 'JetBrains Mono', 'SF Mono', monospace;
@@ -70,7 +87,7 @@
       position: absolute;
       top: 12px;
       right: 12px;
-      background: #333;
+      background: #c9a84c;
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -78,8 +95,10 @@
       font-size: 11px;
       cursor: pointer;
       font-family: inherit;
+      font-weight: 600;
+      transition: all 0.2s;
     }
-    .copy-btn:hover { background: #555; }
+    .copy-btn:hover { background: #b8952e; }
     .copy-btn.copied { background: #2d6a4f; }
 
     .select-all-link {
@@ -95,12 +114,12 @@
 </head>
 <body>
   <div class="container">
-    <h1>✉ Email Signatures</h1>
+    <h1>✉ <span>Email Signatures</span></h1>
     <p class="subtitle">Unified signatures for the team. Pick one, copy, paste into your email client.</p>
 
     <!-- StackMind -->
     <div class="company">
-      <h2>StackMind</h2>
+      <h2>Stack<span>Mind</span></h2>
       <p class="desc">Myšlení, které prodáváme</p>
 
       <div class="card">
